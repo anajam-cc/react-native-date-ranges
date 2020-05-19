@@ -36,9 +36,7 @@ export default class ComposePicker extends Component {
       endDate: null,
       date: new Date(),
       focus: 'startDate',
-      currentDate: moment(),
-      textStartDate: 'Start Date',
-      textEndDate: 'End Date'
+      currentDate: moment()
     };
   }
   isDateBlocked = date => {
@@ -144,70 +142,101 @@ export default class ComposePicker extends Component {
   };
 
   render() {
-    const { customStyles = {} } = this.props;
+    const { customStyles = {}, buttonAlignmentStyles } = this.props;
 
     let style = styles.stylish;
     style = this.props.centerAlign ? { ...style } : style;
     style = { ...style, ...this.props.style };
 
     return (
-      <TouchableHighlight
-        underlayColor={'transparent'}
-        onPress={() => {
-          this.setModalVisible(true);
-        }}
-        style={[
-          { width: '100%', height: '100%', justifyContent: 'center' },
-          style
-        ]}
-      >
-        <View>
-          <View>
-            <View style={[customStyles.contentInput, styles.contentInput]}>
-              {this.getTitleElement()}
+      this.props.directModal ? (
+        <Modal
+          animationType="slide"
+          onRequestClose={() => this.setModalVisible(false)}
+          transparent={true}
+          visible={this.props.isModalVisible}
+        >
+          <View style={[ this.props.outterContainer ]}>
+            <View style={[{ height: '90%' }, this.props.innerContainer]}>
+              <DateRange
+                headFormat={this.props.headFormat}
+                customStyles={customStyles}
+                markText={this.props.markText}
+                onDatesChange={this.onDatesChange}
+                isDateBlocked={this.isDateBlocked}
+                startDate={this.state.startDate}
+                endDate={this.state.endDate}
+                focusedInput={this.state.focus}
+                selectedBgColor={this.props.selectedBgColor || undefined}
+                selectedTextColor={this.props.selectedTextColor || undefined}
+                mode={this.props.mode || 'single'}
+                currentDate={this.state.currentDate}
+              />
+            </View>
+            <View
+              style={[ buttonAlignmentStyles ]}
+            >
+              {this.renderButton()}
             </View>
           </View>
-          <Modal
-            animationType="slide"
-            onRequestClose={() => this.setModalVisible(false)}
-            transparent={false}
-            visible={this.state.modalVisible}
+        </Modal>
+      ) : (
+          <TouchableHighlight
+            underlayColor={'transparent'}
+            onPress={() => {
+              this.setModalVisible(true);
+            }}
+            style={[
+              { width: '100%', height: '100%', justifyContent: 'center' },
+              style
+            ]}
           >
-            <View stlye={{ flex: 1, flexDirection: 'column' }}>
-              <View style={{ height: '90%' }}>
-                <DateRange
-                  headFormat={this.props.headFormat}
-                  customStyles={customStyles}
-                  markText={this.props.markText}
-                  onDatesChange={this.onDatesChange}
-                  isDateBlocked={this.isDateBlocked}
-                  startDate={this.state.startDate}
-                  endDate={this.state.endDate}
-                  focusedInput={this.state.focus}
-                  selectedBgColor={this.props.selectedBgColor || undefined}
-                  selectedTextColor={this.props.selectedTextColor || undefined}
-                  mode={this.props.mode || 'single'}
-                  currentDate={this.state.currentDate}
-                  textStartDate={this.state.textStartDate}
-                  textEndDate={this.state.textEndDate}
-                />
+            <View>
+              <View>
+                <View style={[customStyles.contentInput, styles.contentInput]}>
+                  {this.getTitleElement()}
+                </View>
               </View>
-              <View
-                style={{
-                  paddingBottom: '5%',
-                  width: '100%',
-                  height: '10%',
-                  flexDirection: 'row',
-                  justifyContent: 'center',
-                  alignItems: 'center'
-                }}
+              <Modal
+                animationType="slide"
+                onRequestClose={() => this.setModalVisible(false)}
+                transparent={true}
+                visible={this.state.modalVisible}
               >
-                {this.renderButton()}
-              </View>
+                <View stlye={{ flex: 1, flexDirection: 'column' }}>
+                  <View style={{ height: '90%' }}>
+                    <DateRange
+                      headFormat={this.props.headFormat}
+                      customStyles={customStyles}
+                      markText={this.props.markText}
+                      onDatesChange={this.onDatesChange}
+                      isDateBlocked={this.isDateBlocked}
+                      startDate={this.state.startDate}
+                      endDate={this.state.endDate}
+                      focusedInput={this.state.focus}
+                      selectedBgColor={this.props.selectedBgColor || undefined}
+                      selectedTextColor={this.props.selectedTextColor || undefined}
+                      mode={this.props.mode || 'single'}
+                      currentDate={this.state.currentDate}
+                    />
+                  </View>
+                  <View
+                    style={{
+                      paddingBottom: '5%',
+                      width: '100%',
+                      height: '10%',
+                      flexDirection: 'row',
+                      justifyContent: 'center',
+                      alignItems: 'center'
+                    }}
+                  >
+                    {this.renderButton()}
+                  </View>
+                </View>
+              </Modal>
             </View>
-          </Modal>
-        </View>
-      </TouchableHighlight>
+          </TouchableHighlight>
+        )
     );
   }
 }
