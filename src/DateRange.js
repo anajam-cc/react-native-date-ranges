@@ -29,8 +29,9 @@ const styles = {
     paddingHorizontal: 20
   },
   dateContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between"
+    flexDirection: "column",
+    justifyContent: "space-between",
+    alignItems: "center"
   },
   headTitleText: {
     fontSize: normalize(20),
@@ -174,12 +175,13 @@ export default class DateRange extends Component {
           )}
           {this.props.mode === "range" && (
             <View>
-              <Text style={markTitle}>{markText}</Text>
+              {/* <Text style={markTitle}>{markText}</Text> */}
               <View style={styles.dateContainer}>
                 <Text style={headerDate}>
                   {this.state.clearStart ? this.state.clearStart : this.state.textStartDate}
                 </Text>
-                <Text style={styles.headTitleText} />
+                <Text style={headerDate}>--------</Text>
+                {/* <Text style={styles.headTitleText} /> */}
                 <Text style={headerDate}>
                   {this.state.clearEnd ? this.state.clearEnd : this.state.textEndDate}
                 </Text>

@@ -22,7 +22,7 @@ const styles = {
   dayText: {
     color: 'rgb(0, 0, 0)',
     fontWeight: '600',
-    fontSize : normalize(14),
+    fontSize : normalize(12),
   },
   dayBlocked: {
     backgroundColor: 'rgb(255, 255, 255)'
