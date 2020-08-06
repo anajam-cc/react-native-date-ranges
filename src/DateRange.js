@@ -85,7 +85,7 @@ export default class DateRange extends Component {
     const defalutFormat =
       !this.props.mode || this.props.mode === "single"
         ? "ddd, MMM D"
-        : "MMM DD,YYYY";
+        : "MMM DD, YYYY";
     const headFormat = this.props.headFormat || defalutFormat;
     const { startDate, endDate, focusedInput, currentDate } = event;
     if (currentDate) {
